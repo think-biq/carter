@@ -15,9 +15,10 @@ TEST_EXE_PATH := $(BUILD_DIR)/CarterTest
 ifeq ($(WITH_WINDOWS),1)
 	TEST_EXE_PATH = $(BUILD_DIR)/$(BUILD_MODE)/CarterTest.exe
 endif
+BIN_DIR ?= "$(BUILD_DIR)/$(BUILD_MODE)"
+WITH_TEST ?= 1
 GRIND ?= valgrind
 GRIND_OPTS ?= --show-leak-kinds=all --leak-check=full --track-origins=yes -v
-WITH_TEST ?= 1
 TEST_FLAGS := -D JustOnce_WithTest=${WITH_TEST} \
 	-D ShaOne_WithTest=0 \
 	-D Testly_WithTest=0
@@ -28,6 +29,7 @@ debug:
 	@echo "FILE_PATH: $(FILE_PATH)"
 	@echo "PROJECT_DIR: $(PROJECT_DIR)"
 	@echo "PROJECT_NAME: $(PROJECT_NAME)"
+	@echo "OS: $(OS)"
 
 clean:
 	@rm -rf "$(BUILD_DIR)"
@@ -44,8 +46,8 @@ build:
 	@cmake --build $(BUILD_DIR)
 
 run-test:
-	@(([ ${WITH_TEST} = 1 ] && [ -f "$(BUILD_DIR)/CarterTest" ]) \
-		&& "$(BUILD_DIR)/./CarterTest" ) || echo Skipping test ...
+	@(([ ${WITH_TEST} = 1 ] && [ -f "$(TEST_EXE_PATH)" ]) \
+		&& "$(TEST_EXE_PATH)" ) || echo Skipping test ...
 
 docs: clean-docs icon
 	doxygen docs/doxygen.cfg > docs/doxygen.log 2> docs/doxygen.err.log

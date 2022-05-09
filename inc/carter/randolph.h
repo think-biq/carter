@@ -8,6 +8,7 @@
 #define _H_RANDOLPH_H_
 
 #include <stdint.h>
+#include <stdlib.h>
 
 int
 randolph_startup(void);
